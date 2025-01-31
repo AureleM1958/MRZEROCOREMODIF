@@ -187,7 +187,7 @@ class VoxelGridPhantom:
     @classmethod
     def brainweb(cls, file_name: str) -> VoxelGridPhantom:
         warn("brainweb() will be removed in a future version, use load() instead", DeprecationWarning)
-        return cls.load(file_name,allow_pickle=True)
+        return cls.load(file_name)
 
     @classmethod
     def load(cls, file_name: str) -> VoxelGridPhantom:
