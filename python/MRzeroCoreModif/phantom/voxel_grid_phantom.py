@@ -187,12 +187,12 @@ class VoxelGridPhantom:
     @classmethod
     def brainweb(cls, file_name: str) -> VoxelGridPhantom:
         warn("brainweb() will be removed in a future version, use load() instead", DeprecationWarning)
-        return cls.load(file_name)
+        return cls.load(file_name,allow_pickle=True)
 
     @classmethod
     def load(cls, file_name: str) -> VoxelGridPhantom:
         """Load a phantom from data produced by `generate_maps.py`."""
-        with np.load(file_name, allow_pickle=True) as data:
+        with np.load(file_name) as data:
             T1 = torch.tensor(data['T1_map'])
             T2 = torch.tensor(data['T2_map'])
             T2dash = torch.tensor(data['T2dash_map'])
