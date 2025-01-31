@@ -367,7 +367,7 @@ def load_phantom(size: Optional[tuple[int, int]] = None,
     B0_polynomial : list[float] | None
         Construct a B0 map and add it to the loaded data. The polynomial is
         defined by [x, y, x^2, y^2, x*y], where x, y are in the range [-1, 1[
-    
+
     Returns
     -------
     mr0.VoxelGridPhantom:
@@ -376,6 +376,9 @@ def load_phantom(size: Optional[tuple[int, int]] = None,
     from urllib.request import urlretrieve
     from MRzeroCore import VoxelGridPhantom
     import os
+    import numpy as np
+    import torch
+
     phantom_name = url.split("/")[-1]
 
     if not os.path.exists(phantom_name):
@@ -385,14 +388,14 @@ def load_phantom(size: Optional[tuple[int, int]] = None,
     if phantom_name.endswith(".mat"):
         phantom = VoxelGridPhantom.load_mat(phantom_name)
     elif phantom_name.endswith(".npz"):
-        phantom = VoxelGridPhantom.brainweb(phantom_name)
+        phantom = VoxelGridPhantom.brainweb(phantom_name, allow_pickle=True)
     else:
         raise ValueError(f"Can't load {phantom_name}: unknown file extension")
 
     # Apply scaling - if requested
     if size is not None:
         phantom = phantom.interpolate(*size, 1)
-    
+
     # Apply scaling
     phantom.B0 += dB0_fB0[0]
     phantom.B0 *= dB0_fB0[1]
